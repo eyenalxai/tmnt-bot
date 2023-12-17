@@ -40,7 +40,7 @@ def add_spacy_models(*, dispatcher: Dispatcher) -> Dispatcher:
 
 def add_cmudict(*, dispatcher: Dispatcher) -> Dispatcher:
     logger.info("Downloading cmudict for nltk")
-    nltk.download(info_or_id="cmudict", download_dir="./nltk_data", raise_on_error=True)
+    nltk.download(info_or_id="cmudict", raise_on_error=True)
     logger.info("Downloaded cmudict for nltk")
 
     dispatcher["cmudict_dict"] = cmudict.dict()

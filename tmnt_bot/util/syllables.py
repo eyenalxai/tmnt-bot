@@ -25,7 +25,7 @@ def count_syllables_in_word(
         vowels = ["а", "е", "ё", "и", "о", "у", "ы", "э", "ю", "я"]
         return Ok(sum(letter in vowels for letter in word.lower()))
 
-    return Err("Cannot count syllables in word because language is not supported")
+    return Err("Language is not supported")
 
 
 def count_syllables(
