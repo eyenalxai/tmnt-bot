@@ -14,10 +14,13 @@ async def filter_non_text(
     if not isinstance(message, Message):
         raise TypeError("Message is not a Message, somehow")
 
-    if not message.text:
-        logger.error("No text in message?! Message: {message}".format(message=message))
-        return None
+    if message.text is not None:
+        data["message_text"] = message.text
+        return await handler(message, data)
 
-    data["message_text"] = message.text
+    if message.caption is not None:
+        data["message_text"] = message.caption
+        return await handler(message, data)
 
-    return await handler(message, data)
+    logger.error(f"No text in message?! Message: {message}")
+    return None
