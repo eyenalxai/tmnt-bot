@@ -13,10 +13,7 @@ async def on_startup(bot: Bot) -> None:
         logger.info(f"Webhook set to: {bot_settings.webhook_url}")
 
 
-async def on_shutdown(bot: Bot) -> None:
-    if bot_settings.poll_type == "WEBHOOK":
-        await bot.delete_webhook(drop_pending_updates=False)
-        logger.info("Webhook deleted")
+async def on_shutdown() -> None:
     logger.info("Shutting down...")
 
 
