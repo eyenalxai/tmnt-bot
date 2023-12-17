@@ -1,8 +1,10 @@
+import nltk  # type: ignore
 import spacy
 from aiogram import Dispatcher
 from aiogram.fsm.storage.memory import SimpleEventIsolation
 from lingua import Language as LinguaLanguage
 from lingua import LanguageDetectorBuilder
+from nltk.corpus import cmudict  # type: ignore
 from spacy import Language as SpacyLanguage
 
 from tmnt_bot.config.log import logger
@@ -36,11 +38,21 @@ def add_spacy_models(*, dispatcher: Dispatcher) -> Dispatcher:
     return dispatcher
 
 
+def add_cmudict(*, dispatcher: Dispatcher) -> Dispatcher:
+    logger.info("Downloading cmudict for nltk")
+    nltk.download(info_or_id="cmudict", download_dir="./nltk_data", raise_on_error=True)
+    logger.info("Downloaded cmudict for nltk")
+
+    dispatcher["cmudict_dict"] = cmudict.dict()
+    return dispatcher
+
+
 def initialize_dispatcher() -> Dispatcher:
     dispatcher = Dispatcher(events_isolation=SimpleEventIsolation())
 
     dispatcher = add_language_detection(dispatcher=dispatcher)
     dispatcher = add_spacy_models(dispatcher=dispatcher)
+    dispatcher = add_cmudict(dispatcher=dispatcher)
 
     dispatcher.include_router(router=text_router)
 

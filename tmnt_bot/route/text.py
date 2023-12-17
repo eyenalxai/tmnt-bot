@@ -19,6 +19,7 @@ async def text_handler(
     language: LinguaLanguage | None,
     nlp_en: SpacyLanguage,
     nlp_ru: SpacyLanguage,
+    cmudict_dict: dict,
     message_text: str,
 ) -> None:
     if len(message_text) > 80:
@@ -53,7 +54,18 @@ async def text_handler(
     if len("".join(words)) > 60:
         return
 
-    syllables_count = count_syllables(pyphen=pyphen_result.ok_value, words=words)
+    syllables_count_result = count_syllables(
+        language=language,
+        pyphen=pyphen_result.ok_value,
+        cmudict_dict=cmudict_dict,
+        words=words,
+    )
 
-    if syllables_count == 7:
+    if isinstance(syllables_count_result, Err):
+        logger.error(
+            f"Could not count syllables for language {syllables_count_result.err_value}"
+        )
+        return
+
+    if syllables_count_result.ok_value == 8:
         await message.reply("TMNT")
