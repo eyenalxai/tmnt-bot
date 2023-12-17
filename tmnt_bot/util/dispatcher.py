@@ -1,7 +1,6 @@
 import nltk  # type: ignore
 import spacy
 from aiogram import Dispatcher
-from aiogram.fsm.storage.memory import SimpleEventIsolation
 from lingua import Language as LinguaLanguage
 from lingua import LanguageDetectorBuilder
 from nltk.corpus import cmudict  # type: ignore
@@ -48,7 +47,7 @@ def add_cmudict(*, dispatcher: Dispatcher) -> Dispatcher:
 
 
 def initialize_dispatcher() -> Dispatcher:
-    dispatcher = Dispatcher(events_isolation=SimpleEventIsolation())
+    dispatcher = Dispatcher()
 
     dispatcher = add_language_detection(dispatcher=dispatcher)
     dispatcher = add_spacy_models(dispatcher=dispatcher)
