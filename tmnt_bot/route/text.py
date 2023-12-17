@@ -5,7 +5,9 @@ from result import Err
 from spacy import Language as SpacyLanguage
 
 from tmnt_bot.config.log import logger
+from tmnt_bot.util.pyphen import get_pyphen_by_language
 from tmnt_bot.util.spacy import get_spacy_model_by_language
+from tmnt_bot.util.syllables import count_syllables
 from tmnt_bot.util.words import extract_words_only
 
 text_router = Router(name="text router")
@@ -19,6 +21,9 @@ async def text_handler(
     nlp_ru: SpacyLanguage,
     message_text: str,
 ) -> None:
+    if len(message_text) > 80:
+        return
+
     if language is None:
         logger.warning(f"No language detected for message text: {message_text}")
         return
@@ -35,5 +40,20 @@ async def text_handler(
         )
         return
 
+    pyphen_result = get_pyphen_by_language(language=language)
+
+    if isinstance(pyphen_result, Err):
+        logger.error(
+            f"Could not get pyphen thing for language {pyphen_result.err_value}"
+        )
+        return
+
     words = extract_words_only(nlp=spacy_model_result.ok_value, text=message_text)
-    await message.answer(text=f"Words: {words}")
+
+    if len("".join(words)) > 60:
+        return
+
+    syllables_count = count_syllables(pyphen=pyphen_result.ok_value, words=words)
+
+    if syllables_count == 7:
+        await message.reply("TMNT")
