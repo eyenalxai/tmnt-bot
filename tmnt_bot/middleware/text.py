@@ -22,5 +22,5 @@ async def filter_non_text(
         data["message_text"] = message.caption
         return await handler(message, data)
 
-    logger.error(f"No text in message?! Message: {message}")
+    logger.info("No text in message")
     return None

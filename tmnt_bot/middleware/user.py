@@ -15,7 +15,7 @@ async def filter_non_user(
         raise TypeError("Message is not a Message, somehow")
 
     if not message.from_user:
-        logger.error(f"No user in message?! Message: {message}")
+        logger.info("No user in message")
         return None
 
     return await handler(message, data)
