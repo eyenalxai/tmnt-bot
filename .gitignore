@@ -1,0 +1,7 @@
+/.venv/
+/.idea/
+/.env.local
+/.env.prod
+/.mypy_cache/
+/.ruff_cache/
+__pycache__
