@@ -68,4 +68,4 @@ async def text_handler(
         return
 
     if syllables_count_result.ok_value == 8:
-        await message.reply("TMNT")
+        await message.reply("Teenage Mutant Ninja Turtles!")
