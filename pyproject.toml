@@ -16,6 +16,7 @@ lingua-language-detector = "^2.0.2"
 aiogram = "^3.2.0"
 pydantic-settings = "^2.1.0"
 pydantic = "^2.5.2"
+result = "^0.15.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.12.0"
